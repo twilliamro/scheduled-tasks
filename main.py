@@ -13,8 +13,8 @@ import smtplib
 import os
 
 # import os and use it to get the Github repository secrets
-MY_EMAIL = os.environ.get("python100xtest@gmail.com")
-MY_PASSWORD = os.environ.get("pggh tksa qccp btcn")
+MY_EMAIL = os.environ.get("MY_EMAIL")
+MY_PASSWORD = os.environ.get("MY_PASSWORD")
 
 today = datetime.now()
 today_tuple = (today.month, today.day)
@@ -29,7 +29,7 @@ if today_tuple in birthdays_dict:
         contents = letter_file.read()
         contents = contents.replace("[NAME]", birthday_person["name"])
 
-    with smtplib.SMTP(host:"smtp.gmail.com", port:587) as connection:
+    with smtplib.SMTP("smtp.gmail.com", 587) as connection:
         connection.starttls()
         connection.login(MY_EMAIL, MY_PASSWORD)
         connection.sendmail(
