@@ -6,9 +6,11 @@ import pytz
 from twilio.rest import Client
 
 ##With Secrets
-#for Twilio
-account_sid = os.environ.get("account_sid")
-auth_token = os.environ.get("auth_token")
+# #for Twilio
+# account_sid = os.environ.get("account_sid")
+# auth_token = os.environ.get("auth_token")
+account_sid = os.environ["account_sid"]
+auth_token = os.environ["auth_token"]
 TwilioPhoneNumber = os.environ.get("TwilioPhoneNumber")
 MyPhoneNumber = os.environ.get("MyPhoneNumber")
 # for weather information
