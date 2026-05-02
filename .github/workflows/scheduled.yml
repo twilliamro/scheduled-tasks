@@ -14,9 +14,8 @@ on:
     # ║                                                                ║
     # ║  Use https://time.is/UTC to find your local time in UTC       ║
     # ╚═══════════════════════════════════════════════════════════════╝
-    - cron: '0 20 * * *'
-    - cron: '0 12 * * *'
-
+    - cron: '0 6 * * *'
+    
   # This adds a "Run workflow" button so you can test manually
   workflow_dispatch:
 
@@ -42,6 +41,11 @@ jobs:
         env:
           # Your secrets are available as environment variables
           # Add more secrets in Settings > Secrets > Actions
-          MY_EMAIL: ${{ secrets.MY_EMAIL }}
-          MY_PASSWORD: ${{ secrets.MY_PASSWORD }}
+          account_sid: ${{ secrets.account_sid }} 
+          auth_token: ${{ secrets.auth_token }} 
+          TwilioPhoneNumber: ${{ secrets.TwilioPhoneNumber }} 
+          MyPhoneNumber: ${{ secrets.MyPhoneNumber }} 
+          API_key: ${{ secrets.API_key }} 
+          MY_LAT: ${{ secrets.MY_LAT }} 
+          MY_LONG: ${{ secrets.MY_LONG }} 
         run: python main.py
