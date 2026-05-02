@@ -1,39 +1,89 @@
-# To run and test the code you need to update 4 places:
-# 1. Change MY_EMAIL/MY_PASSWORD to your own details.
-# 2. Go to your email provider and make it allow less secure apps.
-# 3. Update the SMTP ADDRESS to match your email provider.
-# 4. Update birthdays.csv to contain today's month and day.
-# See the solution video in the 100 Days of Python Course for explainations.
-
-
-from datetime import datetime
-import pandas
-import random
-import smtplib
 import os
+import requests
+from datetime import datetime, timezone
+from timezonefinder import TimezoneFinder
+import pytz
+from twilio.rest import Client
 
-# import os and use it to get the Github repository secrets
-MY_EMAIL = os.environ.get("MY_EMAIL")
-MY_PASSWORD = os.environ.get("MY_PASSWORD")
+##With Secrets
+#for Twilio
+account_sid = os.environ.get["account_sid"]
+auth_token = os.environ.get["auth_token"]
+TwilioPhoneNumber = os.environ.get["TwilioPhoneNumber"]
+MyPhoneNumber = os.environ.get["MyPhoneNumber"]
+# for weather information
+API_key = os.environ.get["API_key"]
+MY_LAT = os.environ.get["MY_LAT"]
+MY_LONG = os.environ.get["MY_LONG"]
 
-today = datetime.now()
-today_tuple = (today.month, today.day)
+#FindTimezone from Coordinates
+tf = TimezoneFinder()
+timezone_str = tf.timezone_at(lat=MY_LAT, lng=MY_LONG)
+print(f"Timezone: {timezone_str}")
+# Create timezone OBJECT from the string
+timezone_obj = pytz.timezone(timezone_str)
 
-data = pandas.read_csv("birthdays.csv")
-birthdays_dict = {(data_row["month"], data_row["day"])                  
-        : data_row for (index, data_row) in data.iterrows()}
-if today_tuple in birthdays_dict:
-    birthday_person = birthdays_dict[today_tuple]
-    file_path = f"letter_templates/letter_{random.randint(1, 3)}.txt"
-    with open(file_path) as letter_file:
-        contents = letter_file.read()
-        contents = contents.replace("[NAME]", birthday_person["name"])
+parameters = {
+    "lat":MY_LAT,
+    "lon":MY_LONG,
+    "appid":API_key,
+    "units": "metric",
+    "cnt": 8,
+}
 
-    with smtplib.SMTP("smtp.gmail.com", 587) as connection:
-        connection.starttls()
-        connection.login(MY_EMAIL, MY_PASSWORD)
-        connection.sendmail(
-            from_addr=MY_EMAIL,
-            to_addrs=birthday_person["email"],
-            msg=f"Subject:Happy Birthday!\n\n{contents}"
-        )
+response = requests.get(url="https://api.openweathermap.org/data/2.5/forecast", params=parameters)
+response.raise_for_status()
+data = response.json()
+
+# if id < 700: bring_umbrela: data['list'][0-3]['weather'][0]['id']
+for i, forecast in enumerate(data['list']):
+    weather_id = forecast['weather'][0]["id"]
+    if weather_id < 700:
+        weather_main = forecast['weather'][0]["main"]
+        dt_txt = forecast['dt_txt']
+
+        # Convert dt_txt to UTC datetime
+        utc_dt = datetime.fromisoformat(dt_txt)
+        utc_dt = pytz.UTC.localize(utc_dt)
+
+        #convert to local time usein timezoe object
+        local_dt = utc_dt.astimezone(timezone_obj)
+        #Call strftime() on the datetime object, NOT on the string
+        formatted_time = local_dt.strftime('%d/%m/%Y %H:%M:%S')
+
+        print(f"Take a Umbrela!!! at {formatted_time}, Weather: {weather_main}  ID= {weather_id}")
+
+#get complete weather forecast for timezone_str and present in timezone_str timezone
+sms_short_message = []
+for i, forecast in enumerate(data['list']):
+    temp_min = forecast['main']["temp_min"]
+    temp_max = forecast['main']["temp_max"]
+    weather_main = forecast['weather'][0]["main"]
+    weather_id = forecast['weather'][0]["id"]
+    dt_txt = forecast['dt_txt']
+
+    # Convert dt_txt to UTC datetime
+    utc_dt = datetime.fromisoformat(dt_txt)
+    utc_dt = pytz.UTC.localize(utc_dt)
+
+    # ✅ Convert to local time using timezone OBJECT
+    local_dt = utc_dt.astimezone(timezone_obj)
+
+    # ✅ Call strftime() on the datetime object
+    formatted_time = local_dt.strftime('%d/%m/%Y %H:%M:%S')
+    print(f"At {formatted_time}, Temperature: from {temp_min} to {temp_max}, Weather {weather_main}  ID= {weather_id}")
+
+    sms_short_message.append(f"At {formatted_time},{temp_min}oC to {temp_max}oC, {weather_main}")
+sms_short_weather_forecast = "\n".join(sms_short_message)
+print(sms_short_weather_forecast)
+
+# send an SMS with the weather prediction (message) with twilio
+client = Client(account_sid, auth_token)
+
+message = client.messages.create(
+    from_=TwilioPhoneNumber,
+    body=sms_short_weather_forecast,
+    to=MyPhoneNumber,
+)
+
+print(message.status)
