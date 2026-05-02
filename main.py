@@ -7,14 +7,14 @@ from twilio.rest import Client
 
 ##With Secrets
 #for Twilio
-account_sid = os.environ.get["account_sid"]
-auth_token = os.environ.get["auth_token"]
-TwilioPhoneNumber = os.environ.get["TwilioPhoneNumber"]
-MyPhoneNumber = os.environ.get["MyPhoneNumber"]
+account_sid = os.environ.get("account_sid")
+auth_token = os.environ.get("auth_token")
+TwilioPhoneNumber = os.environ.get("TwilioPhoneNumber")
+MyPhoneNumber = os.environ.get("MyPhoneNumber")
 # for weather information
-API_key = os.environ.get["API_key"]
-MY_LAT = os.environ.get["MY_LAT"]
-MY_LONG = os.environ.get["MY_LONG"]
+API_key = os.environ.get("API_key")
+MY_LAT = os.environ.get("MY_LAT")
+MY_LONG = os.environ.get("MY_LONG")
 
 #FindTimezone from Coordinates
 tf = TimezoneFinder()
