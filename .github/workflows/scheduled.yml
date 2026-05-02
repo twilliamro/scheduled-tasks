@@ -41,10 +41,10 @@ jobs:
         env:
           # Your secrets are available as environment variables
           # Add more secrets in Settings > Secrets > Actions
-          account_sid: ${{ secrets.account_sid }} 
-          auth_token: ${{ secrets.auth_token }} 
-          TwilioPhoneNumber: ${{ secrets.TwilioPhoneNumber }} 
-          MyPhoneNumber: ${{ secrets.MyPhoneNumber }} 
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }} 
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }} 
+          TWILIO_PHONE_NUMBER: ${{ secrets.TWILIO_PHONE_NUMBER }} 
+          MY_PHONE_NUMBER: ${{ secrets.MY_PHONE_NUMBER }} 
           API_key: ${{ secrets.API_key }} 
           MY_LAT: ${{ secrets.MY_LAT }} 
           MY_LONG: ${{ secrets.MY_LONG }} 
