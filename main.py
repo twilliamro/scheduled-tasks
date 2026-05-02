@@ -84,15 +84,15 @@ print(sms_short_weather_forecast)
 
 
 # send an SMS with the weather prediction (message) with twilio
-client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+# client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 print(TWILIO_ACCOUNT_SID)
 print(TWILIO_AUTH_TOKEN)
 print(TWILIO_PHONE_NUMBER)
 print(MY_PHONE_NUMBER)
-message = client.messages.create(
-    from_=TWILIO_PHONE_NUMBER,
-    body=sms_short_weather_forecast,
-    to=MY_PHONE_NUMBER,
-)
+# message = client.messages.create(
+#     from_=TWILIO_PHONE_NUMBER,
+#     body=sms_short_weather_forecast,
+#     to=MY_PHONE_NUMBER,
+# )
 
 print(message.status)
