@@ -9,24 +9,18 @@ from twilio.rest import Client
 # # #for Twilio
 # # account_sid = os.environ.get("account_sid")
 # # auth_token = os.environ.get("auth_token")
-# account_sid = os.environ["account_sid"]
-# auth_token = os.environ["auth_token"]
-# TwilioPhoneNumber = os.environ.get("TwilioPhoneNumber")
-# MyPhoneNumber = os.environ.get("MyPhoneNumber")
+TwilioPhoneNumber = os.environ.get("TwilioPhoneNumber")
+MyPhoneNumber = os.environ.get("MyPhoneNumber")
 # # for weather information
-# API_key = os.environ.get("API_key")
-# MY_LAT = os.environ.get("MY_LAT")
-# MY_LONG = os.environ.get("MY_LONG")
+API_key = os.environ.get("API_key")
+MY_LAT = os.environ.get("MY_LAT")
+MY_LONG = os.environ.get("MY_LONG")
 
-# ✅ CORRECT - Using parentheses
 TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
-TWILIO_PHONE_NUMBER = os.environ.get("TWILIO_PHONE_NUMBER")
-MY_PHONE_NUMBER = os.environ.get("MY_PHONE_NUMBER")
-WEATHER_API_KEY = os.environ.get("WEATHER_API_KEY")
 
 # Optional: Add validation
-if not all([TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER]):
+if not all([TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN]):
     raise ValueError("Missing required Twilio environment variables")
     
 
@@ -92,7 +86,7 @@ sms_short_weather_forecast = "\n".join(sms_short_message)
 print(sms_short_weather_forecast)
 
 # send an SMS with the weather prediction (message) with twilio
-client = Client(account_sid, auth_token)
+client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 message = client.messages.create(
     from_=TwilioPhoneNumber,
