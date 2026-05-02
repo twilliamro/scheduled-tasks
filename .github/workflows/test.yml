@@ -23,43 +23,43 @@ jobs:
 
       - name: Check secrets are configured
         env:
-          account_sid: ${{ secrets.account_sid }} 
-          auth_token: ${{ secrets.auth_token }} 
-          TwilioPhoneNumber: ${{ secrets.TwilioPhoneNumber }} 
-          MyPhoneNumber: ${{ secrets.MyPhoneNumber }} 
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }} 
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }} 
+          TWILIO_PHONE_NUMBER: ${{ secrets.TWILIO_PHONE_NUMBER }} 
+          MY_PHONE_NUMBER: ${{ secrets.MY_PHONE_NUMBER }} 
           API_key: ${{ secrets.API_key }} 
           MY_LAT: ${{ secrets.MY_LAT }} 
           MY_LONG: ${{ secrets.MY_LONG }} 
 
         run: |
-          if [ -z "$account_sid" ]; then
-            echo "account_sid secret is not set!"
+          if [ -z "$TWILIO_ACCOUNT_SID" ]; then
+            echo "TWILIO_ACCOUNT_SID secret is not set!"
             echo "Go to Settings > Secrets > Actions and add it."
             exit 1
           else
-            echo "account_sid is configured"
+            echo "TWILIO_ACCOUNT_SID is configured"
           fi
-          if [ -z "$auth_token" ]; then
-            echo "auth_token secret is not set!"
+          if [ -z "$TWILIO_AUTH_TOKEN" ]; then
+            echo "TWILIO_AUTH_TOKEN secret is not set!"
             echo "Go to Settings > Secrets > Actions and add it."
             exit 1
           else
-            echo "auth_token is configured"
+            echo "TWILIO_AUTH_TOKEN is configured"
           fi
-          if [ -z "$TwilioPhoneNumber" ]; then
-            echo "TwilioPhoneNumber secret is not set!"
+          if [ -z "$TWILIO_PHONE_NUMBER" ]; then
+            echo "TWILIO_PHONE_NUMBER secret is not set!"
             echo "Go to Settings > Secrets > Actions and add it."
             exit 1
           else
-            echo "TwilioPhoneNumber is configured"
+            echo "TWILIO_PHONE_NUMBER is configured"
           fi
 
-          if [ -z "$MyPhoneNumber" ]; then
-            echo "MyPhoneNumber secret is not set!"
+          if [ -z "$MY_PHONE_NUMBER" ]; then
+            echo "MY_PHONE_NUMBER secret is not set!"
             echo "Go to Settings > Secrets > Actions and add it."
             exit 1
           else
-            echo "MyPhoneNumber is configured"
+            echo "MY_PHONE_NUMBER is configured"
           fi
 
           if [ -z "$API_key" ]; then
