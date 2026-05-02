@@ -7,17 +7,14 @@ from twilio.rest import Client
 
 # ##With Secrets
 # # #for Twilio
-# # account_sid = os.environ.get("account_sid")
-# # auth_token = os.environ.get("auth_token")
-TwilioPhoneNumber = os.environ.get("TwilioPhoneNumber")
-MyPhoneNumber = os.environ.get("MyPhoneNumber")
+TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
+TWILIO_PHONE_NUMBER = os.environ.get("TWILIO_PHONE_NUMBER")
+MY_PHONE_NUMBER = os.environ.get("MY_PHONE_NUMBER")
 # # for weather information
 API_key = os.environ.get("API_key")
 MY_LAT = os.environ.get("MY_LAT")
 MY_LONG = os.environ.get("MY_LONG")
-
-TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
-TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 
 # Optional: Add validation
 if not all([TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN]):
@@ -85,13 +82,17 @@ for i, forecast in enumerate(data['list']):
 sms_short_weather_forecast = "\n".join(sms_short_message)
 print(sms_short_weather_forecast)
 
+
 # send an SMS with the weather prediction (message) with twilio
 client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-
+print(TWILIO_ACCOUNT_SID)
+print(TWILIO_AUTH_TOKEN)
+print(TWILIO_PHONE_NUMBER)
+print(MY_PHONE_NUMBER)
 message = client.messages.create(
-    from_=TwilioPhoneNumber,
+    from_=TWILIO_PHONE_NUMBER,
     body=sms_short_weather_forecast,
-    to=MyPhoneNumber,
+    to=MY_PHONE_NUMBER,
 )
 
 print(message.status)
