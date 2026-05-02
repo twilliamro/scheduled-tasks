@@ -95,4 +95,4 @@ print(MY_PHONE_NUMBER)
 #     to=MY_PHONE_NUMBER,
 # )
 
-print(message.status)
+# print(message.status)
